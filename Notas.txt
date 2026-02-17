@@ -1,0 +1,15 @@
+Uso de "función virtual pura" - Entity como  interfaz
+
+Entity.h
+
+virtual void update() = 0;
+
+Se indica que la función update() es "pura" con el 0 - no tiene implementación en esta clase. Para usar esta función, se debe definir en las clases derivadas de Entity (Enemy, Player, etc deberán tener su propia implementación de update()). El hecho de que Entity tenga (aunque sea) una función virtual pura, la vuelve abstracta: la clase Entity NO puede instanciarse, no se pueden crear objetos Entity. Asi, Entity se vuelve una clase "molde", que indica elementos básicos que deben tener las clases hijas derivadas.
+
+-----------------------------------------------------------------------------------------------------
+
+Uso de "override"
+
+void update() override;
+
+Con esta palabra clave indicamos el uso del update en la clase hija, no el update de la clase Entity. Esta palabra clave además genera un error si no se encuentra el método solicitado.

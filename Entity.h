@@ -21,7 +21,7 @@ public:
 	Entity(int startX, int startY, char s, int c);
 	virtual ~Entity();
 	
-	virtual void update() = 0;   // método abstracto
+	virtual void update() = 0;   // método abstracto virtual: cada objeto que se derive de Entity debera implementar su propia funcion Update
 	virtual void draw() const;
 	virtual void clear() const;
 	
