@@ -70,10 +70,15 @@ void Player::shoot(Bullet bullets[], int& bulletCount, int maxBullets)
 	if (bulletCount >= maxBullets)
 		return;
 	
-	bullets[bulletCount] = Bullet(x, y - 1);
-	bulletCount++;
-	
-	lastShotTime = clock();
+	for (int i = 0; i < maxBullets; i++)
+	{
+		if (!bullets[i].isActive())
+		{
+			bullets[i] = Bullet(x, y - 1, -1);
+			lastShotTime = clock();
+			break;
+		}
+	}
 }
 
 //vidas
