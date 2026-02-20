@@ -13,3 +13,9 @@ Uso de "override"
 void update() override;
 
 Con esta palabra clave indicamos el uso del update en la clase hija, no el update de la clase Entity. Esta palabra clave además genera un error si no se encuentra el método solicitado.
+
+-----------------------------------------------------------------------------------------------------
+
+Uso de la librería <ctime> vs <chrono>
+
+En este proyecto se usa la librería ctime para controlar el tiempo dentro del juego. De todas formas, investigando otras librerías dentro de C++, aparece la la librería chrono como una versión moderna de ctime: tiene manejo de unidades mas pequeñas de tiempo, intervalos de tiempo y manejo de tiempo independiente del reloj de la CPU o el SO. Esto la vuelve una mejor opción para el desarrollo de juegos, permitiendo mejor control de los tiempos dentro del mismo (desde tiempo de animaciones, hasta control de FPS).

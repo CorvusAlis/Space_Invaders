@@ -1,15 +1,21 @@
-#include "Player.h"
 #include <conio2.h>
+
+#include "Player.h"
+#include "Bullet.h"
 
 Player::Player(int startX, int startY, int screenW)
 	: Entity(startX, startY, '^', LIGHTGREEN)	//pasaje por parametro de los valores de Player - "valores iniciales"
 {
-	speed = 1;	//se mueve "de a un lugar" por la pantalla
+	speed = 1;	//se mueve "de a un lugar" (un caracter) por la pantalla
 	lives = 3;
 	screenWidth = screenW;
+	shotCooldownMs = 300;
+	lastShotTime = 0;
 }
 
-void Player::update()
+//movimiento
+
+void Player::update(Bullet bullets[], int& bulletCount, int maxBullets)
 {
 	if (kbhit())
 	{
@@ -20,6 +26,9 @@ void Player::update()
 		
 		if (key == 'd' || key == 'D')
 			moveRight();
+		
+		if (key == ' ')
+			shoot(bullets, bulletCount, maxBullets);
 	}
 }
 
@@ -43,6 +52,31 @@ void Player::moveRight()
 	}
 }
 
+bool Player::canShoot()	//evita que se spameen disparos agregando un cooldown
+{
+	clock_t now = clock();
+	
+	double elapsedMs =
+		1000.0 * (now - lastShotTime) / CLOCKS_PER_SEC;
+	
+	return elapsedMs >= shotCooldownMs;
+}
+
+void Player::shoot(Bullet bullets[], int& bulletCount, int maxBullets)
+{
+	if (!canShoot())
+		return;
+	
+	if (bulletCount >= maxBullets)
+		return;
+	
+	bullets[bulletCount] = Bullet(x, y - 1);
+	bulletCount++;
+	
+	lastShotTime = clock();
+}
+
+//vidas
 int Player::getLives() const
 {
 	return lives;
