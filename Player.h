@@ -20,8 +20,9 @@ private:
 public:
 	Player(int startX, int startY, int screenW);
 	
-	//movimiento
-	void update(Bullet bullets[], int& bulletCount, int maxBullets);
+	void update() override;
+
+	void handleInput(char key, Bullet bullets[], int& bulletCount, int maxBullets);
 	void moveLeft();
 	void moveRight();
 	

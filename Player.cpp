@@ -13,23 +13,23 @@ Player::Player(int startX, int startY, int screenW)
 	lastShotTime = 0;
 }
 
-//movimiento
-
-void Player::update(Bullet bullets[], int& bulletCount, int maxBullets)
+void Player::update()
 {
-	if (kbhit())
-	{
-		char key = getch();
-		
-		if (key == 'a' || key == 'A')
-			moveLeft();
-		
-		if (key == 'd' || key == 'D')
-			moveRight();
-		
-		if (key == ' ')
-			shoot(bullets, bulletCount, maxBullets);
-	}
+
+}
+
+//se desacopla el manejo de entrada por teclado de la clase update
+//evita que el update reciba parametros, solo se ocupa de actualizar estado
+void Player::handleInput(char key, Bullet bullets[], int& bulletCount, int maxBullets)
+{
+	if (key == 'a' || key == 'A')
+		moveLeft();
+	
+	if (key == 'd' || key == 'D')
+		moveRight();
+	
+	if (key == ' ')
+		shoot(bullets, bulletCount, maxBullets);
 }
 
 void Player::moveLeft()
@@ -52,15 +52,7 @@ void Player::moveRight()
 	}
 }
 
-bool Player::canShoot()	//evita que se spameen disparos agregando un cooldown
-{
-	clock_t now = clock();
-	
-	double elapsedMs =
-		1000.0 * (now - lastShotTime) / CLOCKS_PER_SEC;
-	
-	return elapsedMs >= shotCooldownMs;
-}
+//disparo
 
 void Player::shoot(Bullet bullets[], int& bulletCount, int maxBullets)
 {
@@ -79,6 +71,16 @@ void Player::shoot(Bullet bullets[], int& bulletCount, int maxBullets)
 			break;
 		}
 	}
+}
+
+bool Player::canShoot()	//evita que se spameen disparos agregando un cooldown
+{
+	clock_t now = clock();
+	
+	double elapsedMs =
+		1000.0 * (now - lastShotTime) / CLOCKS_PER_SEC;
+	
+	return elapsedMs >= shotCooldownMs;
 }
 
 //vidas
