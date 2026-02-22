@@ -15,13 +15,12 @@ Bullet::Bullet(int startX, int startY, int dir)
 {
 	direction = dir;
 	speed = 1;
+	active = true;
 }
 
 void Bullet::update()
 {
 	if (!active) return;
-	
-	clear();
 	
 	int newY = y + (direction * speed);
 	
@@ -29,11 +28,16 @@ void Bullet::update()
 	//no se maneja memoria ni vectores
 	if (newY < 1 || newY > 25)
 	{
+		//en vez de usar clear() con la posicion previa, se borra el ultimo frame con la posicion actual de la bala
+		gotoxy(x, y);
+		putch(' ');
+		
 		deactivate();
 		return;
 	}
 	
 	setPosition(x, newY);
+	clear();
 	draw();
 }
 

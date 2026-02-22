@@ -42,9 +42,9 @@ int main()
 		{
 			if (bullets[i].isActive())
 			{
-				bullets[i].clear();
+				//bullets[i].clear();
 				bullets[i].update();
-				bullets[i].draw();
+				//bullets[i].draw();
 			}
 		}		
 		

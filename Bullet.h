@@ -8,7 +8,6 @@ class Bullet : public Entity
 private:
 	int direction;   //-1 = hacia arriba, +1 = hacia abajo - tanto el jugador como los enemigos usaran bullet, pero en direcciones distintas
 	int speed;
-	bool active;
 	
 public:
 	
