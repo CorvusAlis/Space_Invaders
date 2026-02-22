@@ -19,3 +19,32 @@ Con esta palabra clave indicamos el uso del update en la clase hija, no el updat
 Uso de la librería <ctime> vs <chrono>
 
 En este proyecto se usa la librería ctime para controlar el tiempo dentro del juego. De todas formas, investigando otras librerías dentro de C++, aparece la la librería chrono como una versión moderna de ctime: tiene manejo de unidades mas pequeñas de tiempo, intervalos de tiempo y manejo de tiempo independiente del reloj de la CPU o el SO. Esto la vuelve una mejor opción para el desarrollo de juegos, permitiendo mejor control de los tiempos dentro del mismo (desde tiempo de animaciones, hasta control de FPS).
+
+-----------------------------------------------------------------------------------------------------
+
+Desfazaje de frames - sincronización de dibujado/borrado para simular movimiento
+
+El movimiento de los sprites en consola se simula de la siguiente forma: en principio se dibuja el sprite (por ejemplo, la nave). Si el jugador presiona una tecla de movimiento, se procede de la siguiente forma: se guarda la posición actual del sprite, se borra la posición anterior (con la posición guardada anteriormente), y se dibuja el sprite a la posición nueva (por ejemplo, x+1 para moverlo a la derecha). Encontre el caso especifico de las balas, en el cual el ultimo frame no se borraba (al tocar la parte superior de la pantalla, quedaba un sprite de bala "colgado" del borde). En este caso, la lógica clear()/draw() borra siempre el sprite "anterior", por lo que se estaba borrando correctamente el sprite del frame anterior pero no el ultimo (el frame actual). Solucione esto forzando a borrar el sprite en la posicion actual cuando se cumpliera la condicion de "la bala toco o paso el borde superior establecido". Funcion update() de la clase Bullet:
+
+void Bullet::update()
+{
+	if (!active) return;
+	
+	int newY = y + (direction * speed);
+	
+	//si sale de pantalla, desactivar - marcar espacio en el array como libre
+	//no se maneja memoria ni vectores
+	if (newY < 1 || newY > 25)
+	{
+		//en vez de usar clear() con la posicion previa, se borra el ultimo frame con la posicion actual de la bala
+		gotoxy(x, y);
+		putch(' ');
+		
+		deactivate();
+		return;
+	}
+	
+	setPosition(x, newY);
+	clear();
+	draw();
+}
