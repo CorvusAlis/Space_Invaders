@@ -44,6 +44,21 @@ void EnemyGroup::update()
 	if (changeDirection)
 	{
 		direction *= -1;
+		
+		//baja la linea de enemigos
+		for (int i = 0; i < MAX_ENEMIES; i++)
+		{
+			if (!enemies[i].isActive()) continue;
+			
+			enemies[i].setPosition(
+								   enemies[i].getX(),
+								   enemies[i].getY() + 1
+								   );
+			enemies[i].clear();
+			enemies[i].draw();
+		}
+		
+		return;	
 	}
 	
 	//movimiento del grupo entero

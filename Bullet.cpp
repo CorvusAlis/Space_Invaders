@@ -26,7 +26,7 @@ void Bullet::update()
 	
 	//si sale de pantalla, desactivar - marcar espacio en el array como libre
 	//no se maneja memoria ni vectores
-	if (newY < 1 || newY > 25)
+	if (newY < 1 || newY > 30)
 	{
 		//en vez de usar clear() con la posicion previa, se borra el ultimo frame con la posicion actual de la bala
 		gotoxy(x, y);

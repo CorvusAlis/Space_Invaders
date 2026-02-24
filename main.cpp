@@ -1,14 +1,17 @@
 #include <conio2.h>
-#include <windows.h>  //para Sleep() - control de frames
+#include <windows.h>  //para Sleep() - control de frames - configuracion de consola
 
 #include "Player.h"
 #include "EnemyGroup.h"
 #include "Bullet.h"
 
+#include <iostream>
+
+
 int main()
 {
-	int screenWidth = 80;
-	int screenHeight = 25;
+	int screenWidth = 60;
+	int screenHeight = 30;
 	
 	const int MAX_BULLETS = 50;
 	Bullet bullets[MAX_BULLETS];
