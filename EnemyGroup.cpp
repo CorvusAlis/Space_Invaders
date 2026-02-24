@@ -2,17 +2,52 @@
 
 #include "EnemyGroup.h"
 
+#include <conio2.h>
+#include "EnemyGroup.h"
+
 EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 {
 	screenWidth = scrWidth;
+	
 	direction = 1;
 	speed = 1;
+	
 	frameDelay = 10;
 	frameCounter = 0;
 	
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
-		enemies[i] = Enemy(startX + i * spacing, startY, 'W', RED);
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			int posX = startX + col * spacing;
+			int posY = startY + row * 2;
+			
+			char sprite;
+			int color;
+			
+			if (row == 0)
+			{
+				sprite = 'M';
+				color = GREEN;
+			}
+			else if (row == 1)
+			{
+				sprite = 'W';
+				color = RED;
+			}
+			else if (row == 2)
+			{
+				sprite = 'A';
+				color = YELLOW;
+			}
+			else
+			{
+				sprite = 'V';
+				color = CYAN;
+			}
+			
+			enemies[row][col] = Enemy(posX, posY, sprite, color);
+		}
 	}
 }
 
@@ -27,59 +62,73 @@ void EnemyGroup::update()
 	
 	bool changeDirection = false;
 	
-	//deteccion de colision con borde para manjear el "rebote"
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	//deteccion de colision con los bordes
+	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
-		if (!enemies[i].isActive()) continue;
-		
-		int nextX = enemies[i].getX() + (direction * speed);
-		
-		if (nextX <= 1 || nextX >= screenWidth)
+		for (int col = 0; col < ENEMY_COLS; col++)
 		{
-			changeDirection = true;
-			break;
+			if (!enemies[row][col].isActive()) continue;
+			
+			int nextX = enemies[row][col].getX() + (direction * speed);
+			
+			if (nextX <= 1 || nextX >= screenWidth - 1)
+			{
+				changeDirection = true;
+				break;
+			}
 		}
+		
+		if (changeDirection) break;
 	}
 	
+	//cambio de direccion y bajar linea
 	if (changeDirection)
 	{
 		direction *= -1;
 		
-		//baja la linea de enemigos
-		for (int i = 0; i < MAX_ENEMIES; i++)
+		for (int row = 0; row < ENEMY_ROWS; row++)
 		{
-			if (!enemies[i].isActive()) continue;
-			
-			enemies[i].setPosition(
-								   enemies[i].getX(),
-								   enemies[i].getY() + 1
-								   );
-			enemies[i].clear();
-			enemies[i].draw();
+			for (int col = 0; col < ENEMY_COLS; col++)
+			{
+				if (!enemies[row][col].isActive()) continue;
+				
+				enemies[row][col].setPosition(
+											  enemies[row][col].getX(),
+												  enemies[row][col].getY() + 1
+													  );
+				enemies[row][col].clear();
+				enemies[row][col].draw();
+			}
 		}
 		
-		return;	
+		return; //impide que se mueva horizontalmente en este frmae
 	}
 	
-	//movimiento del grupo entero
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	//movimiento horizontal de la matriz
+	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
-		if (!enemies[i].isActive()) continue;
-		
-		enemies[i].setPosition(
-							   enemies[i].getX() + (direction * speed),
-							   enemies[i].getY()
-							   );
-		enemies[i].clear();
-		enemies[i].draw();
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			if (!enemies[row][col].isActive()) continue;
+			
+			enemies[row][col].setPosition(
+										  enemies[row][col].getX() + (direction * speed),
+											  enemies[row][col].getY()
+												  );
+			enemies[row][col].clear();
+			enemies[row][col].draw();
+		}
 	}
 }
 
 void EnemyGroup::draw()
 {
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
-		if (enemies[i].isActive())
-			enemies[i].draw();
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			if (enemies[row][col].isActive())
+				enemies[row][col].draw();
+		}
 	}
 }

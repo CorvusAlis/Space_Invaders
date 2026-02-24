@@ -8,9 +8,10 @@
 class EnemyGroup
 {
 private:
-	static const int MAX_ENEMIES = 10;
+	static const int ENEMY_COLS = 10;
+	static const int ENEMY_ROWS = 4;
 	
-	Enemy enemies[MAX_ENEMIES];
+	Enemy enemies[ENEMY_ROWS][ENEMY_COLS];
 	
 	int direction;
 	int speed;
