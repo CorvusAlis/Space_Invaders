@@ -31,4 +31,5 @@ public:
 	void draw();
 	
 	bool checkBulletCollision(Bullet& bullet);
+	void increaseSpeed();
 };

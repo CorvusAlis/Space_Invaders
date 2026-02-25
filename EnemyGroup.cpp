@@ -169,3 +169,9 @@ bool EnemyGroup::checkBulletCollision(Bullet& bullet)
 	
 	return false;
 }
+
+void EnemyGroup::increaseSpeed()
+{
+	if (frameDelay > 2)   //límite para no romper el juego
+		frameDelay -= 1;
+}

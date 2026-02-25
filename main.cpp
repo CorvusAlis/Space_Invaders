@@ -17,6 +17,9 @@ int main()
 	Bullet bullets[MAX_BULLETS];
 	int bulletCount = 0;
 	
+	int enemiesKilled = 0;
+	int difficultyStep = 3;
+	
 	textbackground(BLACK);
 	clrscr();  //solo para inicializar pantalla al inicio
 	
@@ -60,6 +63,20 @@ int main()
 		//COLISIONES
 		for (int i = 0; i < MAX_BULLETS; i++)
 			enemyGroup.checkBulletCollision(bullets[i]);
+		
+		//incremento de velocidad cada 5 enemigos eleminados
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			if (enemyGroup.checkBulletCollision(bullets[i]))
+			{
+				enemiesKilled++;
+				
+				if (enemiesKilled % difficultyStep == 0)
+				{
+					enemyGroup.increaseSpeed();
+				}
+			}
+		}
 		
 		//DRAW
 		player.draw();
