@@ -27,32 +27,51 @@ int main()
 	
 	while (true)
 	{
-		//RECORDAR 3 PASOS FUNDAMENTALES
-		//clear() para limpiar el frame anterior - update() para actualizar estados - draw() para dibujar nuevo frame
+		//RECORDAR PASOS FUNDAMENTALES
+		//clear() para limpiar el frame anterior - input (en este caso solo para el jugador) - update() para actualizar estados - draw() para dibujar nuevo frame
 		//esto es para todos los objetos - AUNQUE ESTE CREADO EL OBJETO, NO SE RENDERIZA SOLO!!!!
 		
-		//player
-		player.clear();
+		//INPUT
 		if (kbhit())
 		{
 			char key = getch();
 			player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
 		}
-		player.update();
-		player.draw();
 		
-		//enemigos
+		//UPDATE
+		player.update();
 		enemyGroup.update();
 		
-		//balas
-		//ACTUALIZAR EL ARREGLO PARA RENDERIZAR CADA BALA - MISMA LOGICA QUE PLAYER
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			bullets[i].update();
+		}
+		
+		//COLISIONES
+		for (int i = 0; i < MAX_BULLETS; i++)
+			enemyGroup.checkBulletCollision(bullets[i]);
+		
+		
+		//CLEAR
+		player.clear();
+		enemyGroup.clear();
+		
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			if (bullets[i].isActive())
-			{
-				bullets[i].update();
-			}
-		}		
+				bullets[i].clear();
+		}
+		
+		//DRAW
+		player.draw();
+		enemyGroup.draw();
+		
+		for (int i = 0; i < MAX_BULLETS; i++)
+		{
+			if (bullets[i].isActive())
+				bullets[i].draw();
+		}
+		
 		
 		Sleep(16);  //60 FPS aproximado
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Enemy.h"
+#include "Bullet.h"
 
 //esta clase manejara el movimiento de la linea entera de enemigos
 //la clase Enemy manejara la creacion de cada enemigo individual, pero no tendra logica de movimiento
@@ -18,12 +19,16 @@ private:
 	int screenWidth;
 	
 	//para controlar la "velocidad" del movimiento: dejan de moverse todos los frames, se mueven cada X frames.
+	//se puede modificar para que cada vez que se mate a un enemigo o se limpie una fila, acelere el movimiento del resto
 	int frameDelay;
 	int frameCounter;
 	
 public:
 	EnemyGroup(int startX, int startY, int spacing, int scrWidth);
 	
+	void clear();
 	void update();
 	void draw();
+	
+	bool checkBulletCollision(Bullet& bullet);
 };

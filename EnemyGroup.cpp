@@ -1,9 +1,8 @@
 #include <conio2.h>
 
 #include "EnemyGroup.h"
+#include "Bullet.h"
 
-#include <conio2.h>
-#include "EnemyGroup.h"
 
 EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 {
@@ -28,7 +27,7 @@ EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 			if (row == 0)
 			{
 				sprite = 'M';
-				color = GREEN;
+				color = MAGENTA;
 			}
 			else if (row == 1)
 			{
@@ -38,12 +37,12 @@ EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 			else if (row == 2)
 			{
 				sprite = 'A';
-				color = YELLOW;
+				color = CYAN;
 			}
 			else
 			{
 				sprite = 'V';
-				color = CYAN;
+				color = YELLOW;
 			}
 			
 			enemies[row][col] = Enemy(posX, posY, sprite, color);
@@ -62,7 +61,7 @@ void EnemyGroup::update()
 	
 	bool changeDirection = false;
 	
-	//deteccion de colision con los bordes
+	// detectar colisión con bordes
 	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
 		for (int col = 0; col < ENEMY_COLS; col++)
@@ -77,11 +76,9 @@ void EnemyGroup::update()
 				break;
 			}
 		}
-		
 		if (changeDirection) break;
 	}
 	
-	//cambio de direccion y bajar linea
 	if (changeDirection)
 	{
 		direction *= -1;
@@ -96,15 +93,13 @@ void EnemyGroup::update()
 											  enemies[row][col].getX(),
 												  enemies[row][col].getY() + 1
 													  );
-				enemies[row][col].clear();
-				enemies[row][col].draw();
 			}
 		}
 		
-		return; //impide que se mueva horizontalmente en este frmae
+		return;
 	}
 	
-	//movimiento horizontal de la matriz
+	// movimiento horizontal
 	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
 		for (int col = 0; col < ENEMY_COLS; col++)
@@ -115,11 +110,10 @@ void EnemyGroup::update()
 										  enemies[row][col].getX() + (direction * speed),
 											  enemies[row][col].getY()
 												  );
-			enemies[row][col].clear();
-			enemies[row][col].draw();
 		}
 	}
 }
+
 
 void EnemyGroup::draw()
 {
@@ -131,4 +125,47 @@ void EnemyGroup::draw()
 				enemies[row][col].draw();
 		}
 	}
+}
+
+void EnemyGroup::clear()
+{
+	for (int row = 0; row < ENEMY_ROWS; row++)
+	{
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			if (enemies[row][col].isActive())
+				enemies[row][col].clear();
+		}
+	}
+}
+
+
+//colision bala-enemigo, desactivacion y borrado de ambos
+
+bool EnemyGroup::checkBulletCollision(Bullet& bullet)
+{
+	if (!bullet.isActive())
+		return false;
+	
+	int bulletX = bullet.getX();
+	int bulletY = bullet.getY();
+	
+	for (int row = 0; row < ENEMY_ROWS; row++)
+	{
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			if (!enemies[row][col].isActive())
+				continue;
+			
+			if (enemies[row][col].getX() == bulletX &&
+				enemies[row][col].getY() == bulletY)
+			{
+				enemies[row][col].deactivate();
+				bullet.deactivate();
+				return true;
+			}
+		}
+	}
+	
+	return false;
 }

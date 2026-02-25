@@ -17,6 +17,10 @@ public:
 	void update() override;
 	
 	void setDirection(int dir);
+	
+	//getters
+	int getX();
+	int getY();
 };
 
 #endif
