@@ -59,7 +59,24 @@ bool Entity::isActive() const
 	return active;
 }
 
+//cambio en el metodo para coorregir incosistencias visuales al momento de colisionar
+//si bien la logica update-clear-draw deberia funcionar, no logro que ande con las colisiones
+//este deactivate queda mas como un parche forzado
 void Entity::deactivate()
 {
+	//al desactivar, limpiar tambien la posicion actual para evitar sprites "congelados"
+	gotoxy(x, y);
+	putch(' ');
+	
+	if (prevX != x || prevY != y)
+	{
+		gotoxy(prevX, prevY);
+		putch(' ');
+	}
+	
+	//sincronizar prev para que clear() no borre una celda incorrecta/vieja
+	prevX = x;
+	prevY = y;
+	
 	active = false;
 }
