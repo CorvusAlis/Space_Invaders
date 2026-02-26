@@ -28,17 +28,17 @@ EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 			
 			if (row == 0)
 			{
-				sprite = 'M';
+				sprite = 'X';
 				color = MAGENTA;
 			}
 			else if (row == 1)
 			{
-				sprite = 'W';
+				sprite = 'M';
 				color = RED;
 			}
 			else if (row == 2)
 			{
-				sprite = 'A';
+				sprite = 'W';
 				color = CYAN;
 			}
 			else
@@ -174,8 +174,11 @@ bool EnemyGroup::checkBulletCollision(Bullet& bullet)
 
 void EnemyGroup::tryShoot(Bullet enemyBullets[], int maxBullets)
 {
-	//std::cout << "Intentando disparar\n";
-	if (rand() % 1 != 0) return; //probabilidad de disparo por frame, menor número, más disparos
+	//std::cout << "disparo: OK";
+	if (rand() % 30 != 0){		//probabilidad de disparo por frame, menor número, más disparos
+		//std::cout << "PIUM";
+		return; 
+	}
 	
 	//elegir columna aleatoria
 	int col = rand() % ENEMY_COLS;

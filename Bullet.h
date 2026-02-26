@@ -9,11 +9,14 @@ private:
 	int direction;   //-1 = hacia arriba, +1 = hacia abajo - tanto el jugador como los enemigos usaran bullet, pero en direcciones distintas
 	int speed;
 	
+	int moveDelay;
+	int moveTimer;
+	
 public:
 	
 	Bullet();
 	Bullet(int startX, int startY, int dir);
-	Bullet(int startX, int startY, char sprite, int color, int speed, int dir);
+	Bullet(int startX, int startY, char sprite, int color, int spd, int dir);
 	
 	void update() override;
 	

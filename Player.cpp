@@ -4,7 +4,7 @@
 #include "Bullet.h"
 
 Player::Player(int startX, int startY, int screenW)
-	: Entity(startX, startY, '^', LIGHTGREEN)	//pasaje por parametro de los valores de Player - "valores iniciales"
+	: Entity(startX, startY, 'A', LIGHTGREEN)	//pasaje por parametro de los valores de Player - "valores iniciales"
 {
 	speed = 1;	//se mueve "de a un lugar" (un caracter) por la pantalla
 	lives = 3;
@@ -81,6 +81,18 @@ bool Player::canShoot()	//evita que se spameen disparos agregando un cooldown
 		1000.0 * (now - lastShotTime) / CLOCKS_PER_SEC;
 	
 	return elapsedMs >= shotCooldownMs;
+}
+
+//colision con balas
+bool Player::checkCollision(const Bullet& bullet)
+{
+	if (!bullet.isActive())
+		return false;
+	
+	if (bullet.getX() == x && bullet.getY() == y)
+		return true;
+	
+	return false;
 }
 
 //vidas

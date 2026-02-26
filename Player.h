@@ -30,7 +30,8 @@ public:
 	bool canShoot();
 	void shoot(Bullet bullets[], int& bulletCount, int maxBullets);
 	
-	//vidas
+	//vidas y colisiones
+	bool checkCollision(const Bullet& bullet);
 	int getLives() const;
 	void loseLife();
 };

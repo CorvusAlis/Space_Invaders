@@ -105,8 +105,12 @@ int main()
 		
 		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
 		{
-			if (enemyBullets[i].isActive())
+			
+			if (enemyBullets[i].isActive()){
 				enemyBullets[i].draw();
+				//std::cout << "PIUM";
+			}
+		
 		}
 		
 		Sleep(16);  //60 FPS aproximado
