@@ -11,11 +11,32 @@ Player::Player(int startX, int startY, int screenW)
 	screenWidth = screenW;
 	shotCooldownMs = 300;
 	lastShotTime = 0;
+	
+	isInvulnerable = false;
+	blinkTimer = 0;
+	blinkDuration = 60;   //duracion del eecto, aprox un segundo (60 frames = 1 segundo)
+	blinkInterval = 5;    
+	originalColor = color;
 }
 
 void Player::update()
 {
-
+	if (isInvulnerable)
+	{
+		blinkTimer--;
+		
+		//alternar colores
+		if ((blinkTimer / blinkInterval) % 2 == 0)
+			color = RED;
+		else
+			color = originalColor;
+		
+		if (blinkTimer <= 0)
+		{
+			isInvulnerable = false;
+			color = originalColor;
+		}
+	}
 }
 
 //se desacopla el manejo de entrada por teclado de la clase update
@@ -103,10 +124,14 @@ int Player::getLives() const
 
 void Player::loseLife()
 {
+	if (isInvulnerable)
+		return;
+	
 	lives--;
 	
+	isInvulnerable = true;	//para evitar que le afectan balas durante el intervalo
+	blinkTimer = blinkDuration;
+	
 	if (lives <= 0)
-	{
 		active = false;
-	}
 }

@@ -17,6 +17,13 @@ private:
 	clock_t lastShotTime;
 	int shotCooldownMs;
 	
+	//para efectos visuales cuando colisiona con una bala enemiga
+	bool isInvulnerable;
+	int blinkTimer;
+	int blinkDuration;
+	int blinkInterval;
+	int originalColor;
+	
 public:
 	Player(int startX, int startY, int screenW);
 	

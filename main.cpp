@@ -20,8 +20,9 @@ int main()
 	const int MAX_ENEMY_BULLETS = 30;
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	
+	//controlan la cantidad de enemigos que deben ser eliminados antes de subir la velocidad - menor numero, mayor dificultad
 	int enemiesKilled = 0;
-	int difficultyStep = 3;
+	int difficultyStep = 1;
 	
 	textbackground(BLACK);
 	clrscr();  //solo para inicializar pantalla al inicio
