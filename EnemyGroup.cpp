@@ -1,4 +1,5 @@
 #include <conio2.h>
+#include <cstdlib>
 
 #include "EnemyGroup.h"
 #include "Bullet.h"
@@ -13,6 +14,9 @@ EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 	
 	frameDelay = 10;
 	frameCounter = 0;
+
+	shotDelay = 45;
+	shotCounter = 0;
 	
 	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
@@ -61,7 +65,7 @@ void EnemyGroup::update()
 	
 	bool changeDirection = false;
 	
-	// detectar colisión con bordes
+	// detectar colisiÃ³n con bordes
 	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
 		for (int col = 0; col < ENEMY_COLS; col++)
@@ -110,6 +114,61 @@ void EnemyGroup::update()
 										  enemies[row][col].getX() + (direction * speed),
 											  enemies[row][col].getY()
 												  );
+		}
+	}
+}
+
+
+void EnemyGroup::tryShoot(Bullet bullets[], int maxBullets)
+{
+	shotCounter++;
+	if (shotCounter < shotDelay)
+		return;
+
+	shotCounter = 0;
+
+	int activeColumns[ENEMY_COLS];
+	int activeCount = 0;
+
+	for (int col = 0; col < ENEMY_COLS; col++)
+	{
+		for (int row = ENEMY_ROWS - 1; row >= 0; row--)
+		{
+			if (enemies[row][col].isActive())
+			{
+				activeColumns[activeCount++] = col;
+				break;
+			}
+		}
+	}
+
+	if (activeCount == 0)
+		return;
+
+	int selectedCol = activeColumns[rand() % activeCount];
+
+	int shooterRow = -1;
+	for (int row = ENEMY_ROWS - 1; row >= 0; row--)
+	{
+		if (enemies[row][selectedCol].isActive())
+		{
+			shooterRow = row;
+			break;
+		}
+	}
+
+	if (shooterRow == -1)
+		return;
+
+	int shotX = enemies[shooterRow][selectedCol].getX();
+	int shotY = enemies[shooterRow][selectedCol].getY() + 1;
+
+	for (int i = 0; i < maxBullets; i++)
+	{
+		if (!bullets[i].isActive())
+		{
+			bullets[i] = Bullet(shotX, shotY, 1);
+			return;
 		}
 	}
 }

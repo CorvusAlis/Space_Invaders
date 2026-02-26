@@ -22,6 +22,9 @@ private:
 	//se puede modificar para que cada vez que se mate a un enemigo o se limpie una fila, acelere el movimiento del resto
 	int frameDelay;
 	int frameCounter;
+
+	int shotDelay;
+	int shotCounter;
 	
 public:
 	EnemyGroup(int startX, int startY, int spacing, int scrWidth);
@@ -29,6 +32,7 @@ public:
 	void clear();
 	void update();
 	void draw();
-	
+	void tryShoot(Bullet bullets[], int maxBullets);
+
 	bool checkBulletCollision(Bullet& bullet);
 };

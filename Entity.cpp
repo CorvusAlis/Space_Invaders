@@ -29,10 +29,21 @@ void Entity::draw() const
 
 void Entity::clear() const
 {
-	//toma la posicion previa del caracter y la "borra" colocando un espacio
-	gotoxy(prevX, prevY);
-	putch(' ');
+	//borra la celda previa y, si difiere, tambien la actual.
+	//esto mantiene la limpieza consistente con deactivate().
+	if (prevX >= 1 && prevY >= 1)
+	{
+		gotoxy(prevX, prevY);
+		putch(' ');
+	}
+
+	if ((prevX != x || prevY != y) && x >= 1 && y >= 1)
+	{
+		gotoxy(x, y);
+		putch(' ');
+	}
 }
+
 
 void Entity::setPosition(int newX, int newY)
 {
@@ -61,5 +72,24 @@ bool Entity::isActive() const
 
 void Entity::deactivate()
 {
+	//al desactivar, limpiar la posicion actual y tambien la previa.
+	//esto evita que queden restos visuales cuando una entidad se desactiva
+	//antes de que el loop principal llegue a clear().
+	if (x >= 1 && y >= 1)
+	{
+		gotoxy(x, y);
+		putch(' ');
+	}
+
+	if ((prevX != x || prevY != y) && prevX >= 1 && prevY >= 1)
+	{
+		gotoxy(prevX, prevY);
+		putch(' ');
+	}
+
+	//sincronizar prev para que clear() no intente borrar una celda vieja
+	prevX = x;
+	prevY = y;
+
 	active = false;
 }
