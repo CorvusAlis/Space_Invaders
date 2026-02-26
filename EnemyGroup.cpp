@@ -1,4 +1,6 @@
 #include <conio2.h>
+#include <cstdlib>
+#include <iostream>
 
 #include "EnemyGroup.h"
 #include "Bullet.h"
@@ -168,6 +170,38 @@ bool EnemyGroup::checkBulletCollision(Bullet& bullet)
 	}
 	
 	return false;
+}
+
+void EnemyGroup::tryShoot(Bullet enemyBullets[], int maxBullets)
+{
+	//std::cout << "Intentando disparar\n";
+	if (rand() % 1 != 0) return; //probabilidad de disparo por frame, menor número, más disparos
+	
+	//elegir columna aleatoria
+	int col = rand() % ENEMY_COLS;
+	
+	for (int row = ENEMY_ROWS - 1; row >= 0; row--) //buscar enemigo activo más bajo en esa columna
+	{
+		if (enemies[row][col].isActive())
+		{
+			
+			for (int i = 0; i < maxBullets; i++) //buscar bala libre
+			{
+				if (!enemyBullets[i].isActive())
+				{
+					enemyBullets[i] = Bullet(
+											 enemies[row][col].getX(),
+												 enemies[row][col].getY() + 1,
+													 '|',
+													 LIGHTRED,
+													 1,	//speed
+													 1 //direction hacia abajo
+													 );
+					return;
+				}
+			}
+		}
+	}
 }
 
 void EnemyGroup::increaseSpeed()

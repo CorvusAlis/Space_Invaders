@@ -31,5 +31,6 @@ public:
 	void draw();
 	
 	bool checkBulletCollision(Bullet& bullet);
+	void tryShoot(Bullet enemyBullets[], int maxBullets);
 	void increaseSpeed();
 };

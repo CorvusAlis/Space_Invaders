@@ -17,6 +17,9 @@ int main()
 	Bullet bullets[MAX_BULLETS];
 	int bulletCount = 0;
 	
+	const int MAX_ENEMY_BULLETS = 30;
+	Bullet enemyBullets[MAX_ENEMY_BULLETS];
+	
 	int enemiesKilled = 0;
 	int difficultyStep = 3;
 	
@@ -38,10 +41,16 @@ int main()
 		player.clear();
 		enemyGroup.clear();
 		
-		for (int i = 0; i < MAX_BULLETS; i++)
+		for (int i = 0; i < MAX_BULLETS; i++)	//balas jugador
 		{
 			if (bullets[i].isActive())
 				bullets[i].clear();
+		}
+		
+		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)	//balas enemigo
+		{
+			if (enemyBullets[i].isActive())
+				enemyBullets[i].clear();
 		}
 		
 		//INPUT
@@ -54,10 +63,16 @@ int main()
 		//UPDATE
 		player.update();
 		enemyGroup.update();
+		enemyGroup.tryShoot(enemyBullets, MAX_ENEMY_BULLETS);	//probabilidad de disparo de un enemigo de la ultima fila y una columna aleatoria
 		
 		for (int i = 0; i < MAX_BULLETS; i++)
 		{
 			bullets[i].update();
+		}
+		
+		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+		{
+			enemyBullets[i].update();
 		}
 		
 		//COLISIONES
@@ -86,6 +101,12 @@ int main()
 		{
 			if (bullets[i].isActive())
 				bullets[i].draw();
+		}
+		
+		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+		{
+			if (enemyBullets[i].isActive())
+				enemyBullets[i].draw();
 		}
 		
 		Sleep(16);  //60 FPS aproximado

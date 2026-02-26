@@ -13,6 +13,7 @@ public:
 	
 	Bullet();
 	Bullet(int startX, int startY, int dir);
+	Bullet(int startX, int startY, char sprite, int color, int speed, int dir);
 	
 	void update() override;
 	

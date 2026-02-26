@@ -7,7 +7,7 @@ Bullet::Bullet()
 {
 	direction = -1;
 	speed = 1;
-	active = false; //se crea la bala inactiva
+	active = false;	//se crea la bala inactiva
 }
 
 Bullet::Bullet(int startX, int startY, int dir)
@@ -15,6 +15,14 @@ Bullet::Bullet(int startX, int startY, int dir)
 {
 	direction = dir;
 	speed = 1;
+	active = true;
+}
+
+Bullet::Bullet(int startX, int startY, char sprite, int color, int spd, int dir)
+	: Entity(startX, startY, sprite, color)
+{
+	direction = dir;
+	speed = speed;
 	active = true;
 }
 
@@ -26,7 +34,8 @@ void Bullet::update()
 	
 	//si sale de pantalla, desactivar - marcar espacio en el array como libre
 	//no se maneja memoria ni vectores
-	if (newY < 1 || newY > 30)
+	//if (newY < 1 || newY >= 30)
+	if (newY < 1 || newY >= 100)
 	{		
 		deactivate();
 		return;
