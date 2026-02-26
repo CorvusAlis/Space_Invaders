@@ -23,8 +23,8 @@ public:
 	void setDirection(int dir);
 	
 	//getters
-	int getX();
-	int getY();
+	int getX() const;
+	int getY() const;
 };
 
 #endif

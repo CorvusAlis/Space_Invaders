@@ -76,8 +76,19 @@ int main()
 		}
 		
 		//COLISIONES
+		//bala-enemigo
 		for (int i = 0; i < MAX_BULLETS; i++)
 			enemyGroup.checkBulletCollision(bullets[i]);
+		
+		//bala-jugador
+		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+		{
+			if (enemyBullets[i].isActive() && player.checkCollision(enemyBullets[i]))
+			{
+				enemyBullets[i].deactivate();
+				player.loseLife();
+			}
+		}
 		
 		//incremento de velocidad cada 5 enemigos eleminados
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -111,6 +122,14 @@ int main()
 				//std::cout << "PIUM";
 			}
 		
+		}
+		
+		if (player.getLives() <= 0)
+		{
+			system("cls");
+			gotoxy(30, 15);
+			std::cout << "GAME OVER";
+			break;
 		}
 		
 		Sleep(16);  //60 FPS aproximado

@@ -62,10 +62,10 @@ void Bullet::setDirection(int dir)
 	direction = dir;
 }
 
-int Bullet::getX(){
+int Bullet::getX() const{
 	return x;
 }
 
-int Bullet::getY(){
+int Bullet::getY() const{
 	return y;
 }

@@ -104,4 +104,9 @@ int Player::getLives() const
 void Player::loseLife()
 {
 	lives--;
+	
+	if (lives <= 0)
+	{
+		active = false;
+	}
 }
