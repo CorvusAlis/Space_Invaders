@@ -1,7 +1,8 @@
 #include "GameStateManager.h"
 #include <iostream>
-#include <conio.h>
+#include <conio2.h>
 #include <cstdlib>
+#include <windows.h>
 //tomo la idea del ultimo proyecto de MAVI con el switch para controlar que estado esta activo
 //de esta forma no necesito clases para cada pantalla que se encarguen de renderizar
 //esta todo en esta clase, y se llama a distintos metodos desde el main segun que este ocurriendo
@@ -56,11 +57,13 @@ void GameStateManager::run(EnemyGroup& enemyGroup)
 
 //PANTALLAS
 
+//como no se renderiza entero cada frame, si no que se borra el sprite/caracter anterior y se pone uno nuevo en el siguiente lugar
+//antes de cada cambio de estado se tiene que limpiar la pantalla para que no quede nada de la pantalla anterior
+
 //MENU PRINCIPAL
 void GameStateManager::showMenu()
 {
-	system("cls");
-	
+
 	std::cout << "====== SPACE INVADERS ======\n\n";
 	std::cout << "[ENTER] Jugar\n";
 	std::cout << "[I] Instrucciones\n";
@@ -68,21 +71,25 @@ void GameStateManager::showMenu()
 	
 	int key = _getch();
 	
-	if (key == 13)
+	if (key == 13){	//enter
+		clrscr();
 		currentState = States::Playing;
+	}
 	
-	else if (key == 'i' || key == 'I')
+	else if (key == 'i' || key == 'I'){
+		clrscr();
 		currentState = States::Instructions;
+	}
 	
-	else if (key == 27)
+	else if (key == 27){	//escape
+		clrscr();
 		currentState = States::Exit;
+	}
 }
 
 //INSTRUCCIONES
 void GameStateManager::showInstructions()
-{
-	system("cls");
-	
+{	
 	std::cout << "====== INSTRUCCIONES ======\n\n";
 	std::cout << "Mover: Flechas\n";
 	std::cout << "Disparar: Espacio\n\n";
@@ -90,34 +97,38 @@ void GameStateManager::showInstructions()
 	
 	int key = _getch();
 	
-	if (key == 27)
+	if (key == 27){
+		clrscr();
 		currentState = States::Menu;
+	}
 }
 
 //VICTORIA
 void GameStateManager::showWin()
-{
-	system("cls");
-	
+{	
 	std::cout << "¡VICTORIA!\n\n";
 	std::cout << "Presione ENTER para volver al menu principal\n";
 	
 	int key = _getch();
 	
-	if (key == 13)
+	if (key == 13){
+		clrscr();
 		currentState = States::Menu;
+	}
 }
 
 //DERROTA
 void GameStateManager::showGameOver()
 {
-	system("cls");
+	clrscr();
 	
 	std::cout << "GAME OVER\n\n";
 	std::cout << "Presione ENTER para volver al menu\n";
 	
 	int key = _getch();
 	
-	if (key == 13)
+	if (key == 13){
+		clrscr();
 		currentState = States::Menu;
+	}
 }

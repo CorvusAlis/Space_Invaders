@@ -9,6 +9,7 @@
 
 int main()
 {
+	//system("mode con: cols=60 lines=30");
 	int screenWidth = 60;
 	int screenHeight = 30;
 	
@@ -34,10 +35,7 @@ int main()
 	//player.draw();
 	
 	while (gameStateManager.isRunning())
-	{
-		//el metodo run indica que estado correr
-		gameStateManager.run(enemyGroup);
-		
+	{		
 		//ahora el gameloop se ejecutara SOLO mientras el estado del juego sea playing
 		if (gameStateManager.getState() == States::Playing)
 		{
@@ -133,6 +131,11 @@ int main()
 			}
 			
 			Sleep(16);  //60 FPS aproximado
+		}
+		else
+		{
+			//el metodo run indica que estado correr si no se esta jugando
+			gameStateManager.run(enemyGroup);
 		}
 	}
 	return 0;
