@@ -1,12 +1,10 @@
 #include <conio2.h>
 #include <windows.h>  //para Sleep() - control de frames - configuracion de consola
+#include <iostream>
 
 #include "Player.h"
 #include "EnemyGroup.h"
 #include "Bullet.h"
-
-#include <iostream>
-
 
 int main()
 {
@@ -138,3 +136,15 @@ int main()
 	
 	return 0;
 }
+
+bool areEnemiesAlive() const
+{
+	for (int i = 0; i < ROWS; i++)
+	{
+		for (int j = 0; j < COLS; j++)
+		{
+			if (enemies[i][j].isActive())
+				return true; //queda al menos 1 enemigo
+		}
+	}
+	return false;
