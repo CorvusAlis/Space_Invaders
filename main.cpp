@@ -123,28 +123,8 @@ int main()
 		
 		}
 		
-		if (player.getLives() <= 0)
-		{
-			system("cls");
-			gotoxy(30, 15);
-			std::cout << "GAME OVER";
-			break;
-		}
-		
 		Sleep(16);  //60 FPS aproximado
 	}
 	
 	return 0;
 }
-
-bool areEnemiesAlive() const
-{
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			if (enemies[i][j].isActive())
-				return true; //queda al menos 1 enemigo
-		}
-	}
-	return false;
