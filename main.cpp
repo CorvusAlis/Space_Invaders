@@ -63,7 +63,26 @@ int main()
 			if (kbhit())
 			{
 				char key = getch();
-				player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
+				//DEBUG					
+				if (key == '1')
+				{
+					gameStateManager.forceWin();
+				}
+				else if (key == '2')
+				{
+					player.loseLife();
+				}
+				else if (key == '3')
+				{
+					gameStateManager.forceGameOver();
+				}
+				else
+				{
+					player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
+				}
+				//
+				
+			//player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
 			}
 			
 			//UPDATE
@@ -82,9 +101,6 @@ int main()
 			}
 			
 			//COLISIONES
-			//bala-enemigo
-			for (int i = 0; i < MAX_BULLETS; i++)
-				enemyGroup.checkBulletCollision(bullets[i]);
 			
 			//bala-jugador
 			for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
@@ -96,7 +112,7 @@ int main()
 				}
 			}
 			
-			//incremento de velocidad cada 5 enemigos eleminados
+			//bala-enemigo - incremento de velocidad cada 5 enemigos eleminados
 			for (int i = 0; i < MAX_BULLETS; i++)
 			{
 				if (enemyGroup.checkBulletCollision(bullets[i]))
@@ -131,11 +147,12 @@ int main()
 			}
 			
 			Sleep(16);  //60 FPS aproximado
+			
 		}
 		else
 		{
 			//el metodo run indica que estado correr si no se esta jugando
-			gameStateManager.run(enemyGroup);
+			gameStateManager.run(enemyGroup, player);
 		}
 	}
 	return 0;

@@ -4,6 +4,7 @@
 #pragma once
 #include "States.h"
 #include "EnemyGroup.h"
+#include "Player.h"
 
 class GameStateManager
 {
@@ -21,8 +22,12 @@ public:
 	GameStateManager();
 	States getState() const;
 	
-	void run(EnemyGroup& enemyGroup);
+	void run(EnemyGroup& enemyGroup, Player& player);
 	void setGameOver();
 	
 	bool isRunning() const;
+	
+	//para debug
+	void forceWin();
+	void forceGameOver();
 };

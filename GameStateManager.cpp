@@ -24,7 +24,7 @@ States GameStateManager::getState() const
 }
 
 //CONTROLADOR DE LOS ESTADOS DEL JUEGO
-void GameStateManager::run(EnemyGroup& enemyGroup)
+void GameStateManager::run(EnemyGroup& enemyGroup, Player& player)
 {
 	switch (currentState)
 	{
@@ -36,9 +36,20 @@ void GameStateManager::run(EnemyGroup& enemyGroup)
 		showInstructions();
 	break;
 	
-	case States::Playing:	//con este controlo si, mientras el juego esta activo, todavia quedan enemigos
-		if (!(enemyGroup.areEnemiesAlive()))
-			currentState = States::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
+	case States::Playing:
+	if (!enemyGroup.areEnemiesAlive()) //con este controlo si, mientras el juego esta activo, todavia quedan enemigos
+	{
+		clrscr();
+		currentState = States::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
+	}
+	
+	if (player.getLives() <= 0)
+	{
+		clrscr();
+		currentState = States::GameOver;
+		break;
+	}
+	
 	break;
 	
 	case States::Win:
@@ -106,6 +117,8 @@ void GameStateManager::showInstructions()
 //VICTORIA
 void GameStateManager::showWin()
 {	
+	clrscr();
+	
 	std::cout << "¡VICTORIA!\n\n";
 	std::cout << "Presione ENTER para volver al menu principal\n";
 	
@@ -131,4 +144,14 @@ void GameStateManager::showGameOver()
 		clrscr();
 		currentState = States::Menu;
 	}
+}
+
+void GameStateManager::forceWin()
+{
+	currentState = States::Win;
+}
+
+void GameStateManager::forceGameOver()
+{
+	currentState = States::GameOver;
 }
