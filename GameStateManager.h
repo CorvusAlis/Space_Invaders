@@ -2,19 +2,28 @@
 //se deja desacoplado del main para no ensuciar el gameloop
 
 #pragma once
+#include "State.h"
 #include "Enemy.h"
 
-class GameStateMAnager
+class GameStateManager
 {
 private:
-	GameState currentState;
+	State currentState;
+	bool running;
 	
-public:
-	GameState();
+	//controla que esta esta corriendo y que mostrar/hacer
+	void showMenu();
+	void showInstructions();
+	void showWin();
+	void showGameOver();
 	
-	void update(const Enemy enemies[][COLS], int rows, int cols);
 	bool areEnemiesAlive(const Enemy enemies[][COLS], int rows, int cols) const;
 	
+public:
+	GameStateManager();
+	
+	void run(const Enemy enemies[][COLS], int rows, int cols);
 	void setGameOver();
-	GameStateMAnager getState() const;
+	
+	bool isRunning() const;
 };
