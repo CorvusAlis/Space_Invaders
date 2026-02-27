@@ -4,7 +4,7 @@
 #pragma once
 #include "Enemy.h"
 
-class GameState
+class GameStateMAnager
 {
 private:
 	GameState currentState;
@@ -16,5 +16,5 @@ public:
 	bool areEnemiesAlive(const Enemy enemies[][COLS], int rows, int cols) const;
 	
 	void setGameOver();
-	GameState getState() const;
+	GameStateMAnager getState() const;
 };
