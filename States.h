@@ -1,7 +1,7 @@
 //posibles estados del juego
 #pragma once
 
-enum class GameState
+enum class States
 {
 	Menu,
 	Instructions,

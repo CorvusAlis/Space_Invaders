@@ -48,3 +48,9 @@ void Bullet::update()
 	clear();
 	draw();
 }
+
+-----------------------------------------------------------------------------------------------------
+
+Arquitectura del juego
+
+Para dejar el main limpio, cree una clase GameStateManager que se encarga de controlar el estado del juego (si esta en el Menu, si esta corriendo la pantalla de juego, si hubo una derrota o victoria, etc). Esto permite dejar en el gameloop solo la lógica de control del jugador y de los enemigos (Clear, Input, Update, Colision, Draw). Ademas, si quisiera agregar un estado extra (por ejemplo una pantalla nueva, un estado de pausa), solo tendría que tocar GameStateManager y agregar un método si corresponde en main. Ademas, ahora la pantalla efectiva de juego ya no depende de while(true), si no que se renderiza y corre solo si el estado "playing" esta activo.

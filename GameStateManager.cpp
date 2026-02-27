@@ -8,7 +8,7 @@
 
 GameStateManager::GameStateManager()
 {
-	currentState = State::Menu;
+	currentState = States::Menu;
 	running = true;
 }
 
@@ -22,28 +22,28 @@ void GameStateManager::run(const Enemy enemies[][COLS], int rows, int cols)
 {
 	switch (currentState)
 	{
-	case State::Menu:
+	case States::Menu:
 		showMenu();
 	break;
 	
-	case State::Instructions:
+	case States::Instructions:
 		showInstructions();
 	break;
 	
-	case State::Playing:	//con este controlo si, mientras el juego esta activo, todavia quedan enemigos
+	case States::Playing:	//con este controlo si, mientras el juego esta activo, todavia quedan enemigos
 		if (!areEnemiesAlive(enemies, rows, cols))
 			currentState = State::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
 	break;
 	
-	case State::Win:
+	case States::Win:
 		showWin();
 	break;
 	
-	case State::GameOver:
+	case States::GameOver:
 		showGameOver();
 	break;
 	
-	case State::Exit:
+	case States::Exit:
 		running = false;
 	break;
 	}

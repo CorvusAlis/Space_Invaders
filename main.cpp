@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "EnemyGroup.h"
 #include "Bullet.h"
+#include "GameStateManager.h"
 
 int main()
 {
@@ -28,103 +29,113 @@ int main()
 	Player player(screenWidth / 2, screenHeight - 2, screenWidth);	//posicionamiento del jugador en la mitad de la pantalla al iniciar el juego
 	EnemyGroup enemyGroup(10, 3, 3, screenWidth);
 	
-	player.draw();
+	GameStateManager gameStateManager;	//se crea la clase GameStateManager que controlara los estados y el render correspondiente de cada pantalla
 	
-	while (true)
+	//player.draw();
+	
+	while (gameStateManager.isRunning())
 	{
-		//RECORDAR PASOS FUNDAMENTALES
-		//clear() para limpiar el frame anterior - input (en este caso solo para el jugador) - update() para actualizar estados - colisiones - draw() para dibujar nuevo frame
-		//esto es para todos los objetos - AUNQUE ESTE CREADO EL OBJETO, NO SE RENDERIZA SOLO!!!!
+		//el metodo run indica que estado correr
+		gameStateManager.run(enemyGroup.getEnemies(), 
+							 enemyGroup.getRows(), 
+							 enemyGroup.getCols());
 		
-		//CLEAR
-		player.clear();
-		enemyGroup.clear();
-		
-		for (int i = 0; i < MAX_BULLETS; i++)	//balas jugador
+		//ahora el gameloop se ejecutara SOLO mientras el estado del juego sea playing
+		if (gameStateManager.getState() == States::Playing)
 		{
-			if (bullets[i].isActive())
-				bullets[i].clear();
-		}
-		
-		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)	//balas enemigo
-		{
-			if (enemyBullets[i].isActive())
-				enemyBullets[i].clear();
-		}
-		
-		//INPUT
-		if (kbhit())
-		{
-			char key = getch();
-			player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
-		}
-		
-		//UPDATE
-		player.update();
-		enemyGroup.update();
-		enemyGroup.tryShoot(enemyBullets, MAX_ENEMY_BULLETS);	//probabilidad de disparo de un enemigo de la ultima fila y una columna aleatoria
-		
-		for (int i = 0; i < MAX_BULLETS; i++)
-		{
-			bullets[i].update();
-		}
-		
-		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
-		{
-			enemyBullets[i].update();
-		}
-		
-		//COLISIONES
-		//bala-enemigo
-		for (int i = 0; i < MAX_BULLETS; i++)
-			enemyGroup.checkBulletCollision(bullets[i]);
-		
-		//bala-jugador
-		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
-		{
-			if (enemyBullets[i].isActive() && player.checkCollision(enemyBullets[i]))
+			//RECORDAR PASOS FUNDAMENTALES
+			//clear() para limpiar el frame anterior - input (en este caso solo para el jugador) - update() para actualizar estados - colisiones - draw() para dibujar nuevo frame
+			//esto es para todos los objetos - AUNQUE ESTE CREADO EL OBJETO, NO SE RENDERIZA SOLO!!!!
+			
+			//CLEAR
+			player.clear();
+			enemyGroup.clear();
+			
+			for (int i = 0; i < MAX_BULLETS; i++)	//balas jugador
 			{
-				enemyBullets[i].deactivate();
-				player.loseLife();
+				if (bullets[i].isActive())
+					bullets[i].clear();
 			}
-		}
-		
-		//incremento de velocidad cada 5 enemigos eleminados
-		for (int i = 0; i < MAX_BULLETS; i++)
-		{
-			if (enemyGroup.checkBulletCollision(bullets[i]))
+			
+			for (int i = 0; i < MAX_ENEMY_BULLETS; i++)	//balas enemigo
 			{
-				enemiesKilled++;
-				
-				if (enemiesKilled % difficultyStep == 0)
+				if (enemyBullets[i].isActive())
+					enemyBullets[i].clear();
+			}
+			
+			//INPUT
+			if (kbhit())
+			{
+				char key = getch();
+				player.handleInput(key, bullets, bulletCount, MAX_BULLETS);
+			}
+			
+			//UPDATE
+			player.update();
+			enemyGroup.update();
+			enemyGroup.tryShoot(enemyBullets, MAX_ENEMY_BULLETS);	//probabilidad de disparo de un enemigo de la ultima fila y una columna aleatoria
+			
+			for (int i = 0; i < MAX_BULLETS; i++)
+			{
+				bullets[i].update();
+			}
+			
+			for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+			{
+				enemyBullets[i].update();
+			}
+			
+			//COLISIONES
+			//bala-enemigo
+			for (int i = 0; i < MAX_BULLETS; i++)
+				enemyGroup.checkBulletCollision(bullets[i]);
+			
+			//bala-jugador
+			for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+			{
+				if (enemyBullets[i].isActive() && player.checkCollision(enemyBullets[i]))
 				{
-					enemyGroup.increaseSpeed();
+					enemyBullets[i].deactivate();
+					player.loseLife();
 				}
 			}
-		}
-		
-		//DRAW
-		player.draw();
-		enemyGroup.draw();
-		
-		for (int i = 0; i < MAX_BULLETS; i++)
-		{
-			if (bullets[i].isActive())
-				bullets[i].draw();
-		}
-		
-		for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
-		{
 			
-			if (enemyBullets[i].isActive()){
-				enemyBullets[i].draw();
-				//std::cout << "PIUM";
+			//incremento de velocidad cada 5 enemigos eleminados
+			for (int i = 0; i < MAX_BULLETS; i++)
+			{
+				if (enemyGroup.checkBulletCollision(bullets[i]))
+				{
+					enemiesKilled++;
+					
+					if (enemiesKilled % difficultyStep == 0)
+					{
+						enemyGroup.increaseSpeed();
+					}
+				}
 			}
-		
+			
+			//DRAW
+			player.draw();
+			enemyGroup.draw();
+			
+			for (int i = 0; i < MAX_BULLETS; i++)
+			{
+				if (bullets[i].isActive())
+					bullets[i].draw();
+			}
+			
+			for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+			{
+				
+				if (enemyBullets[i].isActive()){
+					enemyBullets[i].draw();
+					//std::cout << "PIUM";
+				}
+				
+			}
+			
+			Sleep(16);  //60 FPS aproximado
 		}
-		
-		Sleep(16);  //60 FPS aproximado
 	}
-	
 	return 0;
 }

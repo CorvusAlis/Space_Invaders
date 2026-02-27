@@ -2,13 +2,13 @@
 //se deja desacoplado del main para no ensuciar el gameloop
 
 #pragma once
-#include "State.h"
+#include "States.h"
 #include "Enemy.h"
 
 class GameStateManager
 {
 private:
-	State currentState;
+	States currentState;
 	bool running;
 	
 	//controla que esta esta corriendo y que mostrar/hacer
