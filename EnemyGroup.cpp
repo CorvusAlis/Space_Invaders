@@ -212,3 +212,14 @@ void EnemyGroup::increaseSpeed()
 	if (frameDelay > 2)   //límite para no romper el juego
 		frameDelay -= 1;
 }
+
+//control de enemigos vivos
+bool EnemyGroup::areEnemiesAlive() const
+{
+	for (int i = 0; i < ENEMY_ROWS; i++)
+		for (int j = 0; j < ENEMY_COLS; j++)
+			if (enemies[i][j].isActive())
+				return true;
+	
+	return false;
+}

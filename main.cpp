@@ -30,15 +30,13 @@ int main()
 	EnemyGroup enemyGroup(10, 3, 3, screenWidth);
 	
 	GameStateManager gameStateManager;	//se crea la clase GameStateManager que controlara los estados y el render correspondiente de cada pantalla
-	
+
 	//player.draw();
 	
 	while (gameStateManager.isRunning())
 	{
 		//el metodo run indica que estado correr
-		gameStateManager.run(enemyGroup.getEnemies(), 
-							 enemyGroup.getRows(), 
-							 enemyGroup.getCols());
+		gameStateManager.run(enemyGroup);
 		
 		//ahora el gameloop se ejecutara SOLO mientras el estado del juego sea playing
 		if (gameStateManager.getState() == States::Playing)

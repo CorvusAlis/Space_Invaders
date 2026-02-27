@@ -33,4 +33,6 @@ public:
 	bool checkBulletCollision(Bullet& bullet);
 	void tryShoot(Bullet enemyBullets[], int maxBullets);
 	void increaseSpeed();
+	
+	bool areEnemiesAlive() const;
 };

@@ -17,8 +17,13 @@ bool GameStateManager::isRunning() const
 	return running;
 }
 
+States GameStateManager::getState() const
+{
+	return currentState;
+}
+
 //CONTROLADOR DE LOS ESTADOS DEL JUEGO
-void GameStateManager::run(const Enemy enemies[][COLS], int rows, int cols)
+void GameStateManager::run(EnemyGroup& enemyGroup)
 {
 	switch (currentState)
 	{
@@ -31,8 +36,8 @@ void GameStateManager::run(const Enemy enemies[][COLS], int rows, int cols)
 	break;
 	
 	case States::Playing:	//con este controlo si, mientras el juego esta activo, todavia quedan enemigos
-		if (!areEnemiesAlive(enemies, rows, cols))
-			currentState = State::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
+		if (!(enemyGroup.areEnemiesAlive()))
+			currentState = States::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
 	break;
 	
 	case States::Win:
@@ -47,17 +52,6 @@ void GameStateManager::run(const Enemy enemies[][COLS], int rows, int cols)
 		running = false;
 	break;
 	}
-}
-
-//control de enemigos vivos
-bool GameStateManager::areEnemiesAlive(const Enemy enemies[][COLS], int rows, int cols) const
-{
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
-			if (enemies[i][j].isActive())
-				return true;
-	
-	return false;
 }
 
 //PANTALLAS
@@ -75,13 +69,13 @@ void GameStateManager::showMenu()
 	int key = _getch();
 	
 	if (key == 13)
-		currentState = State::Playing;
+		currentState = States::Playing;
 	
 	else if (key == 'i' || key == 'I')
-		currentState = State::Instructions;
+		currentState = States::Instructions;
 	
 	else if (key == 27)
-		currentState = State::Exit;
+		currentState = States::Exit;
 }
 
 //INSTRUCCIONES
@@ -97,7 +91,7 @@ void GameStateManager::showInstructions()
 	int key = _getch();
 	
 	if (key == 27)
-		currentState = State::Menu;
+		currentState = States::Menu;
 }
 
 //VICTORIA
@@ -111,7 +105,7 @@ void GameStateManager::showWin()
 	int key = _getch();
 	
 	if (key == 13)
-		currentState = State::Menu;
+		currentState = States::Menu;
 }
 
 //DERROTA
@@ -125,5 +119,5 @@ void GameStateManager::showGameOver()
 	int key = _getch();
 	
 	if (key == 13)
-		currentState = State::Menu;
+		currentState = States::Menu;
 }

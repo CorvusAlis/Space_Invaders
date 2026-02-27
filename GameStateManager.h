@@ -3,7 +3,7 @@
 
 #pragma once
 #include "States.h"
-#include "Enemy.h"
+#include "EnemyGroup.h"
 
 class GameStateManager
 {
@@ -17,12 +17,11 @@ private:
 	void showWin();
 	void showGameOver();
 	
-	bool areEnemiesAlive(const Enemy enemies[][COLS], int rows, int cols) const;
-	
 public:
 	GameStateManager();
+	States getState() const;
 	
-	void run(const Enemy enemies[][COLS], int rows, int cols);
+	void run(EnemyGroup& enemyGroup);
 	void setGameOver();
 	
 	bool isRunning() const;
