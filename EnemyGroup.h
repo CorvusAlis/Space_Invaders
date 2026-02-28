@@ -43,6 +43,7 @@ public:
 	void increaseSpeed();
 	
 	bool areEnemiesAlive() const;
+	bool hasReachedPlayerLine(int playerY);
 	
 	void reset();
 };

@@ -134,8 +134,15 @@ int main()
 				gameStateManager.setState(States::Win);
 				continue;
 			}
-			//DERROTA
+			//DERROTA - POR VIDAS
 			if (player.getLives() <= 0)
+			{
+				gameStateManager.setState(States::GameOver);
+				continue;
+			}
+			
+			//DERROTA - POR INVASIÓN
+			if (enemyGroup.hasReachedPlayerLine(player.getY()))
 			{
 				gameStateManager.setState(States::GameOver);
 				continue;

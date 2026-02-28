@@ -234,6 +234,24 @@ bool EnemyGroup::areEnemiesAlive() const
 	return false;
 }
 
+bool EnemyGroup::hasReachedPlayerLine(int playerY)
+{
+	for (int row = 0; row < ENEMY_ROWS; row++)
+	{
+		for (int col = 0; col < ENEMY_COLS; col++)
+		{
+			if (enemies[row][col].isActive())
+			{
+				if (enemies[row][col].getY() >= playerY)
+				{
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
 void EnemyGroup::reset()
 {
 	speed = initialSpeed;
