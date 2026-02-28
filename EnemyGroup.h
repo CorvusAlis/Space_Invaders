@@ -14,6 +14,10 @@ private:
 	
 	Enemy enemies[ENEMY_ROWS][ENEMY_COLS];
 	
+	int startX;
+	int startY;
+	int spacing;
+	
 	int direction;
 	int speed;
 	int screenWidth;
@@ -22,6 +26,10 @@ private:
 	//se puede modificar para que cada vez que se mate a un enemigo o se limpie una fila, acelere el movimiento del resto
 	int frameDelay;
 	int frameCounter;
+	
+	int initialSpeed;
+	
+	void initializeEnemies();
 	
 public:
 	EnemyGroup(int startX, int startY, int spacing, int scrWidth);
@@ -35,4 +43,6 @@ public:
 	void increaseSpeed();
 	
 	bool areEnemiesAlive() const;
+	
+	void reset();
 };

@@ -17,6 +17,9 @@ Player::Player(int startX, int startY, int screenW)
 	blinkDuration = 60;   //duracion del eecto, aprox un segundo (60 frames = 1 segundo)
 	blinkInterval = 5;    
 	originalColor = color;
+	
+	initialX = startX;
+	initialY = startY;
 }
 
 void Player::update()
@@ -134,4 +137,11 @@ void Player::loseLife()
 	
 	if (lives <= 0)
 		active = false;
+}
+
+void Player::reset()
+{
+	lives = 3;
+	x = initialX;
+	y = initialY;
 }

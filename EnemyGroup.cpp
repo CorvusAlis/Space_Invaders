@@ -6,8 +6,11 @@
 #include "Bullet.h"
 
 
-EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
+EnemyGroup::EnemyGroup(int sX, int sY, int sp, int scrWidth)
 {
+	startX = sX;
+	startY = sY;
+	spacing = sp;
 	screenWidth = scrWidth;
 	
 	direction = 1;
@@ -16,6 +19,13 @@ EnemyGroup::EnemyGroup(int startX, int startY, int spacing, int scrWidth)
 	frameDelay = 10;
 	frameCounter = 0;
 	
+	initialSpeed = speed;
+	
+	initializeEnemies(); //la creacion de enemigos se pasa a este metodo
+}
+
+void EnemyGroup::initializeEnemies()
+{
 	for (int row = 0; row < ENEMY_ROWS; row++)
 	{
 		for (int col = 0; col < ENEMY_COLS; col++)
@@ -222,4 +232,14 @@ bool EnemyGroup::areEnemiesAlive() const
 				return true;
 	
 	return false;
+}
+
+void EnemyGroup::reset()
+{
+	speed = initialSpeed;
+	direction = 1;
+	frameDelay = 10;
+	frameCounter = 0;
+
+	initializeEnemies();
 }

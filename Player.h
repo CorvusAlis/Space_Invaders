@@ -24,6 +24,9 @@ private:
 	int blinkInterval;
 	int originalColor;
 	
+	int initialX;
+	int initialY;
+	
 public:
 	Player(int startX, int startY, int screenW);
 	
@@ -41,6 +44,8 @@ public:
 	bool checkCollision(const Bullet& bullet);
 	int getLives() const;
 	void loseLife();
+	
+	void reset();
 };
 
 #endif

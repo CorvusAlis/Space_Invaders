@@ -37,7 +37,7 @@ void GameStateManager::run(EnemyGroup& enemyGroup, Player& player)
 	break;
 	
 	case States::Playing:
-	if (!enemyGroup.areEnemiesAlive()) //con este controlo si, mientras el juego esta activo, todavia quedan enemigos
+	if (!(enemyGroup.areEnemiesAlive())) //con este controlo si, mientras el juego esta activo, todavia quedan enemigos
 	{
 		clrscr();
 		currentState = States::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
@@ -102,7 +102,7 @@ void GameStateManager::showMenu()
 void GameStateManager::showInstructions()
 {	
 	std::cout << "====== INSTRUCCIONES ======\n\n";
-	std::cout << "Mover: Flechas\n";
+	std::cout << "Mover: [A] y [D]\n";
 	std::cout << "Disparar: Espacio\n\n";
 	std::cout << "Presione ESC para volver al menu\n";
 	
@@ -117,7 +117,7 @@ void GameStateManager::showInstructions()
 //VICTORIA
 void GameStateManager::showWin()
 {	
-	clrscr();
+	//clrscr();
 	
 	std::cout << "¡VICTORIA!\n\n";
 	std::cout << "Presione ENTER para volver al menu principal\n";

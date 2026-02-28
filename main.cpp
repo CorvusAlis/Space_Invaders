@@ -157,3 +157,23 @@ int main()
 	}
 	return 0;
 }
+
+//resteo a estado inicial del juego para nueva partida despues de derrota/victoria
+void resetGame(
+			   Player& player,
+			   EnemyGroup& enemyGroup,
+			   Bullet bullets[],
+			   int maxBullets,
+			   int& enemiesKilled
+			   )
+{
+	player.reset();
+	enemyGroup.reset();
+	
+	for (int i = 0; i < maxBullets; i++)
+	{
+		bullets[i].deactivate();
+	}
+	
+	enemiesKilled = 0;
+}
