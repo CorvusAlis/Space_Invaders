@@ -126,6 +126,17 @@ int main()
 				}
 			}
 			
+			//VICTORIA
+			if (!enemyGroup.areEnemiesAlive())
+			{
+				gameStateManager.setWin();
+			}
+			//DERROTA
+			if (player.getLives() <= 0)
+			{
+				gameStateManager.setGameOver();
+			}
+			
 			//DRAW
 			player.draw();
 			enemyGroup.draw();

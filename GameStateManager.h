@@ -24,6 +24,7 @@ public:
 	
 	void run(EnemyGroup& enemyGroup, Player& player);
 	void setGameOver();
+	void setWin();
 	
 	bool isRunning() const;
 	

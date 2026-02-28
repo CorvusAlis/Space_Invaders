@@ -9,8 +9,8 @@
 class EnemyGroup
 {
 private:
-	static const int ENEMY_COLS = 10;
-	static const int ENEMY_ROWS = 4;
+	static const int ENEMY_COLS = 2;
+	static const int ENEMY_ROWS = 1;
 	
 	Enemy enemies[ENEMY_ROWS][ENEMY_COLS];
 	

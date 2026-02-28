@@ -117,7 +117,7 @@ void GameStateManager::showInstructions()
 //VICTORIA
 void GameStateManager::showWin()
 {	
-	//clrscr();
+	clrscr();
 	
 	std::cout << "¡VICTORIA!\n\n";
 	std::cout << "Presione ENTER para volver al menu principal\n";
@@ -145,6 +145,17 @@ void GameStateManager::showGameOver()
 		currentState = States::Menu;
 	}
 }
+
+void GameStateManager::setWin()
+{
+	currentState = States::Win;
+}
+
+void GameStateManager::setGameOver()
+{
+	currentState = States::GameOver;
+}
+
 
 void GameStateManager::forceWin()
 {
