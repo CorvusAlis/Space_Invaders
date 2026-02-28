@@ -20,13 +20,14 @@ private:
 	
 public:
 	GameStateManager();
-	States getState() const;
 	
 	void run(EnemyGroup& enemyGroup, Player& player);
-	void setGameOver();
-	void setWin();
+	
+	void setState(States newState);
 	
 	bool isRunning() const;
+	
+	States getState() const;
 	
 	//para debug
 	void forceWin();

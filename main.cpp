@@ -7,6 +7,8 @@
 #include "Bullet.h"
 #include "GameStateManager.h"
 
+void resetGame(Player&, EnemyGroup& , Bullet[], int, int&);
+
 int main()
 {
 	//system("mode con: cols=60 lines=30");
@@ -129,12 +131,14 @@ int main()
 			//VICTORIA
 			if (!enemyGroup.areEnemiesAlive())
 			{
-				gameStateManager.setWin();
+				gameStateManager.setState(States::Win);
+				continue;
 			}
 			//DERROTA
 			if (player.getLives() <= 0)
 			{
-				gameStateManager.setGameOver();
+				gameStateManager.setState(States::GameOver);
+				continue;
 			}
 			
 			//DRAW
@@ -162,21 +166,25 @@ int main()
 		}
 		else
 		{
-			//el metodo run indica que estado correr si no se esta jugando
+			States previousState = gameStateManager.getState();
+			
 			gameStateManager.run(enemyGroup, player);
+			
+			States currentState = gameStateManager.getState();
+			
+			//si viene de Win o GameOver y ahora estamos en Menu entonces resetea
+			if ((previousState == States::Win || previousState == States::GameOver) &&
+				currentState == States::Menu)
+			{
+				resetGame(player, enemyGroup, bullets, MAX_BULLETS, enemiesKilled);
+			}
 		}
 	}
 	return 0;
 }
 
 //resteo a estado inicial del juego para nueva partida despues de derrota/victoria
-void resetGame(
-			   Player& player,
-			   EnemyGroup& enemyGroup,
-			   Bullet bullets[],
-			   int maxBullets,
-			   int& enemiesKilled
-			   )
+void resetGame(Player& player, EnemyGroup& enemyGroup, Bullet bullets[], int maxBullets, int& enemiesKilled)
 {
 	player.reset();
 	enemyGroup.reset();

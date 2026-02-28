@@ -36,22 +36,6 @@ void GameStateManager::run(EnemyGroup& enemyGroup, Player& player)
 		showInstructions();
 	break;
 	
-	case States::Playing:
-	if (!(enemyGroup.areEnemiesAlive())) //con este controlo si, mientras el juego esta activo, todavia quedan enemigos
-	{
-		clrscr();
-		currentState = States::Win;	//si no quedan enemigos activos, mostrar pantalla de victoria (pasa al case de Win)
-	}
-	
-	if (player.getLives() <= 0)
-	{
-		clrscr();
-		currentState = States::GameOver;
-		break;
-	}
-	
-	break;
-	
 	case States::Win:
 		showWin();
 	break;
@@ -63,6 +47,9 @@ void GameStateManager::run(EnemyGroup& enemyGroup, Player& player)
 	case States::Exit:
 		running = false;
 	break;
+	
+	default:
+		break;
 	}
 }
 
@@ -146,16 +133,10 @@ void GameStateManager::showGameOver()
 	}
 }
 
-void GameStateManager::setWin()
+void GameStateManager::setState(States newState)
 {
-	currentState = States::Win;
+	currentState = newState;
 }
-
-void GameStateManager::setGameOver()
-{
-	currentState = States::GameOver;
-}
-
 
 void GameStateManager::forceWin()
 {
