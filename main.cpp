@@ -7,7 +7,7 @@
 #include "Bullet.h"
 #include "GameStateManager.h"
 
-void resetGame(Player&, EnemyGroup& , Bullet[], int, int&);
+void resetGame(Player&, EnemyGroup& , Bullet[], int, int&, int&);
 
 int main()
 {
@@ -22,9 +22,11 @@ int main()
 	const int MAX_ENEMY_BULLETS = 30;
 	Bullet enemyBullets[MAX_ENEMY_BULLETS];
 	
-	//controlan la cantidad de enemigos que deben ser eliminados antes de subir la velocidad - menor numero, mayor dificultad
+	//controlan la cantidad de enemigos que deben ser eliminados antes de subir la velocidad - menor numero en step, mayor dificultad
 	int enemiesKilled = 0;
-	int difficultyStep = 1;
+	int difficultyStep = 3;
+	
+	int totalScore = 0;
 	
 	textbackground(BLACK);
 	clrscr();  //solo para inicializar pantalla al inicio
@@ -114,11 +116,14 @@ int main()
 				}
 			}
 			
-			//bala-enemigo - incremento de velocidad cada 5 enemigos eleminados
+			//bala-enemigo - incremento de velocidad cada (difficultyStep) enemigos eleminados
 			for (int i = 0; i < MAX_BULLETS; i++)
 			{
-				if (enemyGroup.checkBulletCollision(bullets[i]))
+				int points = enemyGroup.checkBulletCollision(bullets[i]);
+				
+				if (points > 0)	//como ya no es bool, si devuelve 0 es por que no hubo colision, si devuelve un valor, hubo colision bala-enemigo
 				{
+					totalScore += points;
 					enemiesKilled++;
 					
 					if (enemiesKilled % difficultyStep == 0)
@@ -152,6 +157,15 @@ int main()
 			player.draw();
 			enemyGroup.draw();
 			
+			//HUD - puntaje
+			gotoxy(2, 1);
+			textcolor(WHITE);
+			std::cout << "Score: " << totalScore;
+			
+			//HUD - vidas restantes
+			gotoxy(40, 1);
+			std::cout << "Lives: " << player.getLives();
+			
 			for (int i = 0; i < MAX_BULLETS; i++)
 			{
 				if (bullets[i].isActive())
@@ -183,7 +197,7 @@ int main()
 			if ((previousState == States::Win || previousState == States::GameOver) &&
 				currentState == States::Menu)
 			{
-				resetGame(player, enemyGroup, bullets, MAX_BULLETS, enemiesKilled);
+				resetGame(player, enemyGroup, bullets, MAX_BULLETS, enemiesKilled, totalScore);
 			}
 		}
 	}
@@ -191,7 +205,7 @@ int main()
 }
 
 //resteo a estado inicial del juego para nueva partida despues de derrota/victoria
-void resetGame(Player& player, EnemyGroup& enemyGroup, Bullet bullets[], int maxBullets, int& enemiesKilled)
+void resetGame(Player& player, EnemyGroup& enemyGroup, Bullet bullets[], int maxBullets, int& enemiesKilled, int& totalScore)
 {
 	player.reset();
 	enemyGroup.reset();
@@ -202,4 +216,5 @@ void resetGame(Player& player, EnemyGroup& enemyGroup, Bullet bullets[], int max
 	}
 	
 	enemiesKilled = 0;
+	totalScore = 0;
 }

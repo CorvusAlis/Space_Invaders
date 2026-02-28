@@ -35,29 +35,34 @@ void EnemyGroup::initializeEnemies()
 			
 			char sprite;
 			int color;
+			int score;
 			
 			if (row == 0)
 			{
 				sprite = 'X';
 				color = MAGENTA;
+				score = 40;
 			}
 			else if (row == 1)
 			{
 				sprite = 'M';
 				color = RED;
+				score = 30;
 			}
 			else if (row == 2)
 			{
 				sprite = 'W';
 				color = CYAN;
+				score = 20;
 			}
 			else
 			{
 				sprite = 'V';
 				color = YELLOW;
+				score = 10;
 			}
 			
-			enemies[row][col] = Enemy(posX, posY, sprite, color);
+			enemies[row][col] = Enemy(posX, posY, sprite, color, score);
 		}
 	}
 }
@@ -154,7 +159,7 @@ void EnemyGroup::clear()
 
 //colision bala-enemigo, desactivacion y borrado de ambos
 
-bool EnemyGroup::checkBulletCollision(Bullet& bullet)
+int EnemyGroup::checkBulletCollision(Bullet& bullet)
 {
 	if (!bullet.isActive())
 		return false;
@@ -172,14 +177,15 @@ bool EnemyGroup::checkBulletCollision(Bullet& bullet)
 			if (enemies[row][col].getX() == bulletX &&
 				enemies[row][col].getY() == bulletY)
 			{
+				int score = enemies[row][col].getScoreValue();
 				enemies[row][col].deactivate();
 				bullet.deactivate();
-				return true;
+				return score;
 			}
 		}
 	}
 	
-	return false;
+	return 0;
 }
 
 void EnemyGroup::tryShoot(Bullet enemyBullets[], int maxBullets)
